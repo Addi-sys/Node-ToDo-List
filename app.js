@@ -1,5 +1,6 @@
 const fs = require('fs')
 const yargs = require('yargs')
+const chalk = require("chalk");
 
 // read data from json
 function loadData() {
@@ -10,7 +11,7 @@ function loadData() {
 
         return javaScriptObject
     } catch (err) {
-        console.log("404")
+        console.log(chalk.red.bold("ERROR", err))
         return []
     }
 
@@ -51,7 +52,7 @@ yargs.command({
             complete: arguments.complete
         })
         saveData(todos)
-        console.log('successful')
+        console.log(chalk.green('successful'))
     }
 });
 
@@ -77,7 +78,7 @@ yargs.command({
         } else {
             results = todos
         }
-        results.forEach((e) => console.log(`id: ${e.id}, \n todo: ${e.todo}, \n completed: ${e.complete}`))
+        results.forEach((e) => console.log(chalk.blue(`id: ${e.id}, \n todo: ${e.todo}, \n completed: ${e.complete}`)))
     }
 })
 
@@ -101,12 +102,12 @@ yargs.command({
 
             results = []
             saveData(results)
-            console.log("successful")
+            console.log(chalk.green('successful'))
 
         } else {
             results = todos.filter(e => e.id !== args.id);
             saveData(results);
-            console.log("successful")
+            console.log(chalk.green('successful'))
         }
 
     },
@@ -133,14 +134,14 @@ yargs.command({
         const id = args.id
 
         let index = todos.findIndex(e => e.id === id)
-        console.log(index)
 
         if (index >= 0){
             todos[index].complete = !todos[index].complete
             saveData(todos)
-            console.log("successful")
+            console.log(chalk.green('successful'))
         } else{
-            return "That item does not exist"
+            console.log(chalk.red.bold("That item does not exist"))
+            return 
         }
 
     }
